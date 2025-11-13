@@ -49,6 +49,36 @@
                     "保存.*?(对话|笔记)"
                 ]
             }
+        },
+        "project-todo-manager": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Manages TODO.md synchronization with dev docs and project progress tracking",
+            "promptTriggers": {
+                "keywords": [
+                    "update todo",
+                    "sync todo",
+                    "更新待办",
+                    "同步进度",
+                    "mark complete",
+                    "mark done",
+                    "完成任务",
+                    "标记完成"
+                ],
+                "intentPatterns": [
+                    "(update|sync|maintain).*?(todo|progress|tasks)",
+                    "(mark|set).*?(complete|done|finished)",
+                    "完成.*?(任务|功能)",
+                    "更新.*?(待办|进度)"
+                ]
+            },
+            "fileTriggers": {
+                "paths": [
+                    "dev/docs/**/*.md",
+                    "dev/TODO.md"
+                ]
+            }
         }
     },
     "notes": {

@@ -45,6 +45,9 @@ temp/
 # dev/active/
 # dev/archive/
 
+# Personal session notes (each member maintains their own)
+dev/NEXT_SESSION.md
+
 # Logs
 logs/
 *.log
