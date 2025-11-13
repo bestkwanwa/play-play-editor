@@ -1,7 +1,7 @@
 # Project TODO
 
 **Last Updated**: 2025-11-13
-**Current Phase**: Pre-development Setup
+**Current Phase**: Phase 0 - Project Foundation
 
 ---
 
@@ -14,41 +14,81 @@
 - [x] Create slash commands (/dev-docs, /save-qa)
 - [x] Set up learning documentation system
 
-### Project Organization (In Progress)
+### Project Organization ✅
 - [x] Create dual TODO system (TODO.md + NEXT_SESSION.md)
 - [x] Create project-todo-manager skill for automation
 - [x] Write CONTRIBUTING.md for team onboarding
 - [x] Create NEXT_SESSION.template.md for personal notes
-- [ ] Test TODO.md auto-update with first /dev-docs usage
+- [x] Run `/dev-docs editor-core-architecture` (dev/active/editor-core-architecture/)
+- [x] Test TODO.md auto-update with /dev-docs ✓
 
 ---
 
-## 📦 Backlog: Pre-Development Tasks
+## 🎯 Current Sprint: Phase 0 - Project Foundation (dev/active/editor-core-architecture/editor-core-architecture-plan.md)
 
-### Architecture Planning
-- [ ] Run `/dev-docs editor-core-architecture` to plan editor structure
-- [ ] Define core modules (editor engine, UI, state management)
-- [ ] Decide on key libraries (Monaco/CodeMirror, state library, etc.)
-- [ ] Document architectural decisions
+### 0.1 Initialize Vite + React + TypeScript
+- [ ] Run `npm create vite@latest . -- --template react-ts`
+- [ ] Install dependencies and verify app runs
+- [ ] Commit project initialization
 
-### Project Initialization
-- [ ] Create package.json with project metadata
-- [ ] Create tsconfig.json with TypeScript configuration
-- [ ] Set up directory structure (src/, components/, core/, etc.)
-- [ ] Install initial dependencies
-- [ ] Configure build tooling (Vite/Webpack)
-- [ ] Set up development server
+### 0.2 Configure TypeScript
+- [ ] Enable strict mode and path aliases (@/)
+- [ ] Verify no TypeScript errors
 
-### Development Environment
-- [ ] Verify build runs successfully
-- [ ] Verify TypeScript compilation
-- [ ] Set up hot reload
-- [ ] Test basic React rendering
+### 0.3 Install Core Dependencies
+- [ ] Install Three.js: `npm install three @types/three`
+- [ ] Install React Three Fiber: `npm install @react-three/fiber @react-three/drei`
+- [ ] Install Zustand: `npm install zustand`
 
-### Optional Enhancements
-- [ ] Create editor-specific skills (if patterns emerge)
-- [ ] Set up testing framework
-- [ ] Configure linting and formatting
+### 0.4 Configure ESLint & Prettier
+- [ ] Set up ESLint with React + TypeScript rules
+- [ ] Configure Prettier and Git hooks (husky, lint-staged)
+
+### 0.5 Configure Vitest
+- [ ] Install Vitest and testing utilities
+- [ ] Create test configuration and example test
+
+### 0.6 Set Up Development Scripts
+- [ ] Verify all npm scripts work (dev, build, test, lint)
+- [ ] Test hot module replacement
+
+---
+
+## 📦 Backlog: Future Phases
+
+### Phase 1: Core Architecture (2-3 days)
+- [ ] Create directory structure (dev/active/editor-core-architecture/editor-core-architecture-tasks.md:1.1)
+- [ ] Define TypeScript interfaces (tasks.md:1.2)
+- [ ] Set up Zustand stores (tasks.md:1.3)
+- [ ] Create core hooks (tasks.md:1.4)
+
+### Phase 2: 3D Viewport Foundation (3-4 days)
+- [ ] Create viewport component with R3F Canvas (tasks.md:2.1)
+- [ ] Implement camera controls (tasks.md:2.2)
+- [ ] Add grid and axes helpers (tasks.md:2.3)
+- [ ] Implement basic 3D primitives (tasks.md:2.4)
+- [ ] Add performance monitoring (tasks.md:2.5)
+
+### Phase 3: Scene Management (5-7 days)
+- [ ] Scene object manager (tasks.md:3.1)
+- [ ] Object properties system (tasks.md:3.2)
+- [ ] Selection system (tasks.md:3.3)
+- [ ] Transform gizmo system (tasks.md:3.4)
+- [ ] Scene serialization (tasks.md:3.5)
+
+### Phase 4: UI Components (4-5 days)
+- [ ] Hierarchy panel (tasks.md:4.1)
+- [ ] Properties panel (tasks.md:4.2)
+- [ ] Toolbar (tasks.md:4.3)
+- [ ] Top menu bar (tasks.md:4.4)
+- [ ] Responsive layout (tasks.md:4.5)
+
+### Phase 5: History & Advanced Features (4-5 days)
+- [ ] Undo/redo system (tasks.md:5.1)
+- [ ] Keyboard shortcuts (tasks.md:5.2)
+- [ ] Export functionality (tasks.md:5.3)
+- [ ] Import functionality (tasks.md:5.4)
+- [ ] Optimization & polish (tasks.md:5.5)
 
 ---
 
@@ -58,6 +98,8 @@
 - [x] Claude Code infrastructure integration (2025-11-13)
 - [x] Session management strategy documented (2025-11-13)
 - [x] TODO.md automation system designed (2025-11-13)
+- [x] 3D Editor architecture planning complete (2025-11-13)
+- [x] Technology stack selected: Vite + React + TypeScript + Three.js + R3F + Zustand (2025-11-13)
 
 ---
 
@@ -74,6 +116,12 @@
 - Copy from `dev/NEXT_SESSION.template.md` to get started
 
 **Next Session Focus:**
-- Architecture planning for the editor
-- Project structure initialization
-- Choose core dependencies
+- Begin Phase 0: Project Foundation
+- Initialize Vite + React + TypeScript project
+- Install and configure core dependencies
+- Set up development tooling (ESLint, Prettier, Vitest)
+
+**Architecture Documentation:**
+- Plan: dev/active/editor-core-architecture/editor-core-architecture-plan.md
+- Context: dev/active/editor-core-architecture/editor-core-architecture-context.md
+- Tasks: dev/active/editor-core-architecture/editor-core-architecture-tasks.md
