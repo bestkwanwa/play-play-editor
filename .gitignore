@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Claude Code cache and temporary files
+.claude/hooks/node_modules/
+.claude/hooks/state/
+.claude/tsc-cache/
+.claude/hooks/package-lock.json
+
+# Development docs (optional - uncomment if you don't want to commit them)
+# dev/active/
+# dev/archive/
+
+# Logs
+logs/
+*.log

@@ -1,0 +1,76 @@
+{
+    "version": "1.0",
+    "description": "Skill activation triggers for play-play-editor project. Controls when skills automatically suggest or block actions.",
+    "skills": {
+        "skill-developer": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Meta-skill for creating and managing Claude Code skills",
+            "promptTriggers": {
+                "keywords": [
+                    "skill system",
+                    "create skill",
+                    "add skill",
+                    "skill triggers",
+                    "skill rules",
+                    "hook system",
+                    "skill development",
+                    "skill-rules.json"
+                ],
+                "intentPatterns": [
+                    "(how do|how does|explain).*?skill",
+                    "(create|add|modify|build).*?skill",
+                    "skill.*?(work|trigger|activate|system)"
+                ]
+            }
+        },
+        "learning-documentation": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "medium",
+            "description": "Guidelines for documenting learning conversations and Q&A sessions",
+            "promptTriggers": {
+                "keywords": [
+                    "save conversation",
+                    "record conversation",
+                    "document conversation",
+                    "save qa",
+                    "save q&a",
+                    "learning notes",
+                    "记录对话",
+                    "保存对话",
+                    "学习笔记"
+                ],
+                "intentPatterns": [
+                    "(save|record|document|capture).*?(conversation|discussion|qa|q&a)",
+                    "(how to|how do I).*?(save|record|document).*?(conversation|learning)",
+                    "记录.*?对话",
+                    "保存.*?(对话|笔记)"
+                ]
+            }
+        }
+    },
+    "notes": {
+        "enforcement_types": {
+            "suggest": "Skill suggestion appears but doesn't block execution",
+            "block": "Requires skill to be used before proceeding (guardrail)",
+            "warn": "Shows warning but allows proceeding"
+        },
+        "priority_levels": {
+            "critical": "Highest - Always trigger when matched",
+            "high": "Important - Trigger for most matches",
+            "medium": "Moderate - Trigger for clear matches",
+            "low": "Optional - Trigger only for explicit matches"
+        },
+        "customization": {
+            "next_steps": "As you define your editor architecture, create custom skills for:",
+            "suggestions": [
+                "Editor core patterns (canvas, rendering, state management)",
+                "Component architecture specific to your editor",
+                "React patterns you want to enforce",
+                "Testing strategies for editor functionality"
+            ]
+        }
+    }
+}
