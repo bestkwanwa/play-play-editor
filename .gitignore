@@ -12,8 +12,10 @@ pnpm-debug.log*
 
 # Build outputs
 dist/
+dist-ssr/
 build/
 *.tsbuildinfo
+*.local
 
 # IDE
 .vscode/
