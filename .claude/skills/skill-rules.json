@@ -64,18 +64,26 @@
                     "mark complete",
                     "mark done",
                     "完成任务",
-                    "标记完成"
+                    "标记完成",
+                    "phase complete",
+                    "sprint complete",
+                    "phase done",
+                    "sprint done",
+                    "完成阶段",
+                    "阶段完成"
                 ],
                 "intentPatterns": [
                     "(update|sync|maintain).*?(todo|progress|tasks)",
                     "(mark|set).*?(complete|done|finished)",
                     "完成.*?(任务|功能)",
-                    "更新.*?(待办|进度)"
+                    "更新.*?(待办|进度)",
+                    "(phase|sprint).*?(complete|done|finished)",
+                    "完成.*?阶段"
                 ]
             },
             "fileTriggers": {
                 "paths": [
-                    "dev/docs/**/*.md",
+                    "dev/active/**/*.md",
                     "dev/TODO.md"
                 ]
             }

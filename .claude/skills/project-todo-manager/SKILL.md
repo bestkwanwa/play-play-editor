@@ -44,17 +44,26 @@ This skill ensures **automatic synchronization** between `dev/docs/` planning do
 ### 2. Auto-Update Progress
 
 **When completing implementation:**
-- After finishing a feature, ASK: "Should I mark the corresponding TODO items as completed?"
-- Update `dev/TODO.md` with `[x]` for completed items
+- **Proactively detect** when tasks are completed (check TodoWrite status)
+- **Automatically update** `dev/TODO.md` with `[x]` for completed items
 - Add reference to the implementation (file paths, commit hash if available)
+- **Do not ask for permission** - just update and inform the user
+
+**Trigger conditions:**
+- All tasks in a Phase/Sprint marked as completed in TodoWrite
+- User says "phase complete", "sprint done", "完成阶段"
+- Before Git commit of feature code
+- At session end when tasks are done
 
 **Example:**
 ```markdown
 Before:
 - [ ] Create user schema
 
-After implementation:
+After implementation (automatic):
 - [x] Create user schema (src/models/User.ts:12)
+
+Claude says: "✅ Updated TODO.md to mark user schema task as completed"
 ```
 
 ### 3. Maintain Sync with Dev Docs
@@ -65,11 +74,34 @@ After implementation:
 - Keep completed items as completed
 - Archive old irrelevant tasks to "Completed" section
 
-### 4. Remind About Personal Session Notes
+### 4. Proactive Phase/Sprint Completion Detection
+
+**When all tasks in a Phase/Sprint are completed:**
+- **Automatically detect** by checking TodoWrite completed tasks against TODO.md tasks
+- **Proactively say**: "Phase X complete! Updating TODO.md..."
+- **Automatically update**:
+  - Mark all Phase X tasks as `[x]`
+  - Move Phase X to "Recently Completed" section
+  - Update "Current Phase" to Phase X+1
+  - Update "Next Session Focus"
+  - Update "Last Updated" date
+- **Inform user**: "✅ TODO.md updated: Phase X marked complete, ready for Phase X+1"
+
+**Example flow:**
+```
+User completes last task of Phase 0
+→ Claude detects: All Phase 0 tasks done in TodoWrite
+→ Claude says: "🎉 Phase 0 complete! Updating TODO.md..."
+→ Claude updates TODO.md automatically
+→ Claude says: "✅ TODO.md updated: Phase 0 → Recently Completed, Current Phase → Phase 1"
+```
+
+### 5. Session End Reminder
 
 **At session end or major milestone:**
 - Remind user: "Consider updating your `dev/NEXT_SESSION.md` with next steps"
 - Do NOT edit NEXT_SESSION.md automatically (it's personal)
+- Verify TODO.md is synced with actual progress
 
 ## File Structure
 
@@ -111,34 +143,54 @@ dev/
 
 ## Automation Rules
 
-### ✅ DO Auto-Update TODO.md
+### ✅ DO Auto-Update TODO.md (Without Asking)
 
 1. **After `/dev-docs <topic>`**:
    ```
-   → Extract tasks from dev/docs/<topic>.md
+   → Extract tasks from dev/active/<topic>/tasks.md
    → Add to "Current Sprint" section
-   → Format: - [ ] Task name (dev/docs/topic.md:line)
+   → Format: - [ ] Task name (reference to tasks.md)
+   → Inform: "✅ Added X tasks to TODO.md from planning docs"
    ```
 
-2. **After feature completion**:
+2. **When Phase/Sprint completes**:
    ```
-   → Ask: "Should I mark TODO items as complete?"
-   → Update: - [x] Task name (implementation-file.ts:line)
-   → Add timestamp if major milestone
+   → Detect: All tasks marked completed in TodoWrite
+   → Say: "🎉 Phase X complete! Updating TODO.md..."
+   → Update automatically:
+     - Mark all tasks [x]
+     - Move to "Recently Completed"
+     - Update "Current Phase"
+     - Update "Next Session Focus"
+   → Inform: "✅ TODO.md updated"
    ```
 
-3. **After `/dev-docs-update`**:
+3. **Before Git commit**:
+   ```
+   → Check: TodoWrite completed tasks vs TODO.md
+   → If mismatch: Update TODO.md to match reality
+   → Include updated TODO.md in commit
+   ```
+
+4. **After `/dev-docs-update`**:
    ```
    → Re-sync tasks from updated docs
    → Move completed items to "Recently Completed"
    → Add new tasks to "Current Sprint"
    ```
 
+5. **At session end**:
+   ```
+   → Final check: TodoWrite vs TODO.md sync
+   → Update TODO.md if needed
+   → Remind: Update NEXT_SESSION.md
+   ```
+
 ### ❌ DO NOT Auto-Update
 
-1. **NEXT_SESSION.md** - User's personal file
-2. **TODO.md** - Without explicit trigger or permission
-3. **Backlog section** - Unless user specifically requests
+1. **NEXT_SESSION.md** - User's personal file (never edit)
+2. **Backlog section** - Unless user specifically requests
+3. **Manual user edits** - If user manually edited TODO.md, preserve their changes
 
 ## Integration with Other Files
 
