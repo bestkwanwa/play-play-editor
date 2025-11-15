@@ -5,5 +5,14 @@
  * Each store focuses on a specific domain of application state.
  */
 
-// Future store exports will be added here
-export {}
+// Scene management
+export { useSceneStore } from './sceneStore'
+
+// Selection management
+export { useSelectionStore } from './selectionStore'
+
+// UI state management
+export { useUIStore } from './uiStore'
+
+// History/undo management
+export { useHistoryStore, type Command } from './historyStore'
