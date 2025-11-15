@@ -291,6 +291,76 @@ A: Discourage for consistency, but if they do, respect their changes
 **Q: NEXT_SESSION.md not updating?**
 A: By design - it's a personal file, user maintains it
 
+## Integration with Git Workflow
+
+### Collaboration with `git-workflow-assistant`
+
+This skill works hand-in-hand with the `git-workflow-assistant` skill to keep TODO.md synchronized with Git branches and tags.
+
+**When Phase branch is created**:
+```
+git-workflow-assistant: Creates feature/phase-1-core-architecture
+project-todo-manager: Updates TODO.md:
+  - Sets "Current Phase: Phase 1"
+  - Moves Phase 1 tasks to "Current Sprint"
+```
+
+**When task is completed and merged**:
+```
+git-workflow-assistant: Merges feature/phase-1-typescript-types → feature/phase-1-core-architecture
+project-todo-manager: Updates TODO.md:
+  - [x] Define TypeScript interfaces (src/types/*.ts, commit: abc1234)
+```
+
+**When Phase is released**:
+```
+git-workflow-assistant: Tags v0.1.0 for Phase 1 complete
+project-todo-manager: Updates TODO.md:
+  - Moves Phase 1 to "Recently Completed"
+  - Adds tag reference: "Phase 1 complete (tag: v0.1.0, commit: abc1234)"
+  - Updates "Current Phase" to Phase 2
+```
+
+### Git Information to Track
+
+When updating TODO.md, include Git context when available:
+
+**Task completion**:
+```markdown
+- [x] Create TypeScript interfaces (src/types/scene.ts:1-45, commit: abc1234)
+```
+
+**Phase completion**:
+```markdown
+### Phase 1: Core Architecture (2025-11-15) ✅
+- [x] All Phase 1 tasks completed
+- **Tag**: v0.1.0
+- **Branch**: feature/phase-1-core-architecture (merged to develop)
+- **Commits**: 15 commits, 450 lines added
+```
+
+### Automatic Git Context Extraction
+
+Read Git information automatically:
+
+```bash
+# Get current branch
+git branch --show-current
+
+# Get latest commit hash
+git rev-parse --short HEAD
+
+# Get commits since last tag
+git log --oneline $(git describe --tags --abbrev=0)..HEAD
+
+# Get tag for current commit
+git describe --tags --exact-match 2>/dev/null
+```
+
+Use this information to enrich TODO.md updates.
+
+---
+
 ## Summary
 
 - **Automate**: TODO.md ↔ dev/docs/ synchronization
@@ -298,3 +368,4 @@ A: By design - it's a personal file, user maintains it
 - **Preserve**: Personal NEXT_SESSION.md for individual planning
 - **Commit**: Always include updated TODO.md in commits
 - **Remind**: Prompt user about NEXT_SESSION.md at session end
+- **Integrate**: Work with git-workflow-assistant to track Git context

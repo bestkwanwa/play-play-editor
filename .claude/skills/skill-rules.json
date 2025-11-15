@@ -87,6 +87,53 @@
                     "dev/TODO.md"
                 ]
             }
+        },
+        "git-workflow-assistant": {
+            "type": "guardrail",
+            "enforcement": "block",
+            "priority": "critical",
+            "description": "Enforces Git Flow + Phase naming workflow, automates branch operations, and guides developers",
+            "promptTriggers": {
+                "keywords": [
+                    "start phase",
+                    "begin phase",
+                    "finish phase",
+                    "complete phase",
+                    "开始阶段",
+                    "完成阶段",
+                    "create branch",
+                    "new branch",
+                    "merge branch",
+                    "git checkout",
+                    "git merge",
+                    "git commit",
+                    "git push",
+                    "release phase",
+                    "hotfix",
+                    "紧急修复"
+                ],
+                "intentPatterns": [
+                    "(start|begin|create|开始).*?(phase|阶段)",
+                    "(finish|complete|done|完成).*?(phase|阶段)",
+                    "(create|make|new).*?branch",
+                    "(merge|integrate).*?branch",
+                    "checkout.*?(main|master)",
+                    "commit.*?(main|master|develop)",
+                    "(hotfix|emergency|紧急).*?(fix|bug|修复)",
+                    "release.*?phase"
+                ]
+            },
+            "gitCommandTriggers": {
+                "description": "Monitor for dangerous Git operations",
+                "patterns": [
+                    "git checkout (main|master)",
+                    "git commit.*?(main|master|develop)",
+                    "git push.*?--force",
+                    "git checkout -b (?!feature/phase-)",
+                    "git merge (?!.*--no-ff)",
+                    "git branch -[dD] (main|master|develop)"
+                ]
+            }
         }
     },
     "notes": {
