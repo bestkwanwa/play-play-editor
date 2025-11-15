@@ -49,6 +49,35 @@ git push -u origin feature/phase-{N}-{task}
 # Or just say to Claude: "Work on {task}"
 ```
 
+### Sync Personal Branch (Daily - Recommended)
+
+```bash
+# Rebase to get latest changes (keeps history clean)
+git checkout feature/phase-{N}-{task}
+git fetch origin
+git rebase feature/phase-{N}-{name}
+
+# If conflicts: resolve, then git rebase --continue
+# If already pushed: git push --force-with-lease
+
+# Or just say to Claude: "Update my branch"
+```
+
+### Clean Up Commits Before Merge (Optional)
+
+```bash
+# Interactive rebase to squash/reword commits
+git rebase -i HEAD~5  # Last 5 commits
+
+# In editor: change "pick" to "squash" or "reword"
+# Save and close
+
+# Force push if already pushed
+git push --force-with-lease
+
+# Or just say to Claude: "Clean up my commits"
+```
+
 ### Complete Task (Merge to Phase Branch)
 
 ```bash
@@ -146,9 +175,11 @@ What do you want to do?
 ### ✅ DO
 
 - Always branch from `develop` (not `main`)
-- Use `--no-ff` when merging
+- Use `--no-ff` when merging to public branches
 - Include Phase number in branch names
-- Push feature branches to remote for backup
+- Rebase personal branches daily (keeps history clean)
+- Use `--force-with-lease` (not `--force`) when needed
+- Clean up commits before merging (optional but nice)
 - Let Claude guide you if unsure
 
 ### ❌ DON'T
@@ -157,7 +188,8 @@ What do you want to do?
 - Never commit directly to `develop` (use feature branches)
 - Never force push to `main` or `develop`
 - Never delete `main` or `develop` branches
-- Never merge without `--no-ff`
+- Never rebase public/shared branches (main, develop, Phase branches)
+- Never use `--force` (use `--force-with-lease` instead)
 
 ---
 
@@ -181,11 +213,28 @@ Just ask Claude in natural language:
 
 - "Start Phase 2"
 - "Work on TypeScript types"
-- "Task complete"
-- "Phase done"
-- "Critical bug in production"
+- "Update my branch" → Rebase to latest
+- "Clean up my commits" → Interactive rebase
+- "Task complete" → Merge with --no-ff
+- "Phase done" → Release workflow
+- "Critical bug in production" → Hotfix workflow
 
 Claude will execute the correct Git commands for you!
+
+## Merge vs Rebase Quick Reference
+
+| Scenario                   | Use        | Command                                      |
+| -------------------------- | ---------- | -------------------------------------------- |
+| Sync personal branch daily | **Rebase** | `git rebase feature/phase-{N}-{name}`        |
+| Clean up commits           | **Rebase** | `git rebase -i HEAD~5`                       |
+| Task → Phase branch        | **Merge**  | `git merge --no-ff feature/phase-{N}-{task}` |
+| Phase → Develop            | **Merge**  | `git merge --no-ff feature/phase-{N}-{name}` |
+| Release → Main             | **Merge**  | `git merge --no-ff release/v{X}.{Y}.{Z}`     |
+| Get others' updates        | **Merge**  | `git merge feature/phase-{N}-{name}`         |
+| Update from develop        | **Either** | Rebase (clean) or Merge (safe)               |
+| Shared branch              | **NEVER**  | ❌ Don't rebase public branches              |
+
+**Golden Rule**: Rebase private branches, Merge public milestones
 
 ---
 

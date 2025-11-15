@@ -566,24 +566,27 @@ Would you like to:
 
 ### What Claude Blocks (Guardrails)
 
-| Dangerous Operation           | Detection                            | Response                       |
-| ----------------------------- | ------------------------------------ | ------------------------------ |
-| ❌ Commit to `main`           | Current branch = `main` + git commit | Block + guide to develop       |
-| ❌ Create feature from `main` | On `main` + git checkout -b feature/ | Block + auto-switch to develop |
-| ❌ Wrong branch name          | Branch name doesn't match pattern    | Block + show correct format    |
-| ❌ Merge without `--no-ff`    | git merge without flag               | Warn + suggest `--no-ff`       |
-| ❌ Force push to main/develop | git push --force origin main         | Block + warn about dangers     |
-| ❌ Delete main/develop        | git branch -d main                   | Block + prevent disaster       |
+| Dangerous Operation           | Detection                                   | Response                       |
+| ----------------------------- | ------------------------------------------- | ------------------------------ |
+| ❌ Commit to `main`           | Current branch = `main` + git commit        | Block + guide to develop       |
+| ❌ Create feature from `main` | On `main` + git checkout -b feature/        | Block + auto-switch to develop |
+| ❌ Wrong branch name          | Branch name doesn't match pattern           | Block + show correct format    |
+| ❌ Merge without `--no-ff`    | git merge without flag (on public branches) | Warn + suggest `--no-ff`       |
+| ⚠️ Rebase public branch       | git rebase on main/develop/Phase branches   | Block + explain danger         |
+| ❌ Force push to main/develop | git push --force origin main                | Block + warn about dangers     |
+| ❌ Delete main/develop        | git branch -d main                          | Block + prevent disaster       |
 
 ### What Claude Automates (No Permission Needed)
 
-| Situation            | Claude's Action                   | Example                                                       |
-| -------------------- | --------------------------------- | ------------------------------------------------------------- |
-| ✅ Start Phase       | Create Phase branch from develop  | "Start Phase 1" → creates `feature/phase-1-core-architecture` |
-| ✅ Complete task     | Merge task branch to Phase branch | "Task done" → merges + updates TODO.md                        |
-| ✅ Complete Phase    | Guide through release process     | "Phase done" → step-by-step release guide                     |
-| ✅ Update TODO.md    | Sync Git status to TODO.md        | After every merge/tag                                         |
-| ✅ Suggest next task | Read TODO.md pending tasks        | "What's next?" → shows pending tasks                          |
+| Situation               | Claude's Action                   | Example                                                           |
+| ----------------------- | --------------------------------- | ----------------------------------------------------------------- |
+| ✅ Start Phase          | Create Phase branch from develop  | "Start Phase 1" → creates `feature/phase-1-core-architecture`     |
+| ✅ Sync personal branch | Rebase to latest Phase branch     | "Update my branch" → git rebase feature/phase-1-core-architecture |
+| ✅ Complete task        | Merge task branch to Phase branch | "Task done" → merges + updates TODO.md                            |
+| ✅ Complete Phase       | Guide through release process     | "Phase done" → step-by-step release guide                         |
+| ✅ Update TODO.md       | Sync Git status to TODO.md        | After every merge/tag                                             |
+| ✅ Suggest next task    | Read TODO.md pending tasks        | "What's next?" → shows pending tasks                              |
+| ✅ Cleanup commits      | Suggest interactive rebase        | Before merge → "Clean up commits? git rebase -i HEAD~5"           |
 
 ### Example: Blocking Wrong Branch Name
 
@@ -787,29 +790,267 @@ v1.2.3
 
 ---
 
-### Q9: Can I use `git rebase` instead of `git merge`?
+### Q9: Should I use `git rebase` or `git merge`?
 
-**A**: For this project, we prefer `merge --no-ff`:
+**A**: We use a **hybrid strategy** - rebase for cleanup, merge for integration.
 
-**Why `merge --no-ff` over `rebase`?**
+This combines the best of both worlds: clean linear history on personal branches, clear feature boundaries on shared branches.
 
-- ✅ Preserves complete history (you can see when branches were merged)
-- ✅ Safer for collaboration (no force push needed)
-- ✅ Clear Phase boundaries in git log
-- ✅ Easier to revert entire features
+---
 
-**When you can use `rebase`**:
+#### The Golden Rule
 
-- ✅ Cleaning up your local commits before pushing
-- ✅ On your personal task branch (before merging to Phase branch)
+> **Rebase private branches, Merge public milestones**
 
-**When NOT to use `rebase`**:
+```
+Private branches (you alone)        → Rebase (keep clean)
+Public milestones (team integration) → Merge --no-ff (preserve context)
+```
 
-- ❌ On shared branches (develop, main, Phase branches)
-- ❌ After pushing to remote
-- ❌ On commits others might have based work on
+---
 
-**Claude will warn you** if you try to rebase a shared branch.
+#### When to Use REBASE ✅
+
+**1. Sync your personal task branch with latest Phase branch**
+
+```bash
+# You're working on: feature/phase-1-typescript-types (only you use this)
+# Phase branch updated: feature/phase-1-core-architecture has new commits
+
+git checkout feature/phase-1-typescript-types
+git fetch origin
+git rebase feature/phase-1-core-architecture
+```
+
+**Why**: Keeps your commits on top of latest code, cleaner than merge commits
+
+**2. Clean up your commits before merging**
+
+```bash
+# You have 5 messy commits, want to combine into 2 clean ones
+git rebase -i HEAD~5
+
+# Interactive rebase allows you to:
+# - Squash multiple commits into one
+# - Reword commit messages
+# - Reorder commits
+# - Delete unnecessary commits
+```
+
+**Why**: Makes code review easier, history more readable
+
+**3. Update your branch from develop/Phase branch**
+
+```bash
+# Alternative to: git merge develop
+git rebase develop
+
+# This keeps your branch's commits on top of develop
+```
+
+**Why**: Linear history, easier to follow
+
+---
+
+#### When to Use MERGE --no-ff ✅
+
+**1. Integrate completed task into Phase branch (REQUIRED)**
+
+```bash
+git checkout feature/phase-1-core-architecture
+git merge feature/phase-1-typescript-types --no-ff -m "feat(phase-1): add TypeScript type definitions"
+```
+
+**Why**:
+
+- Preserves "this is a complete feature" boundary
+- Can revert entire feature with one command
+- Code review has clear scope
+
+**2. Complete Phase merge to develop (REQUIRED)**
+
+```bash
+git checkout develop
+git merge feature/phase-1-core-architecture --no-ff -m "feat: complete Phase 1 - Core Architecture"
+```
+
+**Why**: Phase is a major milestone, must be visible in graph
+
+**3. Release to main (REQUIRED)**
+
+```bash
+git checkout main
+git merge release/v0.1.0-phase1 --no-ff
+```
+
+**Why**: Production releases need clear boundaries
+
+---
+
+#### Safety Rules for Rebase ⚠️
+
+**✅ Safe to rebase when**:
+
+1. Branch hasn't been pushed yet
+2. Branch pushed, but only you are using it
+3. You've communicated with team and everyone agrees
+
+**❌ NEVER rebase when**:
+
+1. Commits already merged to develop/main
+2. Other developers have branches based on yours
+3. Commits have been tagged
+4. After creating a Pull Request (unless explicitly required by team)
+
+**How to rebase safely**:
+
+```bash
+# Use --force-with-lease instead of --force
+git push --force-with-lease origin feature/phase-1-typescript-types
+
+# This protects against overwriting others' work
+# It fails if remote has commits you don't have locally
+```
+
+---
+
+#### Visual Comparison
+
+**Using Rebase (Personal Branch)**:
+
+```
+Before rebase:
+* Your commit C
+* Your commit B
+* Your commit A
+|
+| * Someone else's commit
+|/
+* Old base
+
+After rebase:
+* Your commit C (new hash)
+* Your commit B (new hash)
+* Your commit A (new hash)
+* Someone else's commit
+* Old base
+```
+
+Linear history, your commits on top ✅
+
+---
+
+**Using Merge --no-ff (Feature Integration)**:
+
+```
+After merge:
+*   Merge: Add TypeScript types
+|\
+| * Your commit C
+| * Your commit B
+| * Your commit A
+|/
+* Phase branch continues...
+```
+
+Feature boundary preserved ✅
+
+---
+
+#### Recommended Daily Workflow
+
+**Morning (start work on your task)**:
+
+```bash
+git checkout feature/phase-1-typescript-types
+git fetch origin
+git rebase feature/phase-1-core-architecture  # Get latest Phase changes
+# Resolve conflicts if any
+git push --force-with-lease  # If already pushed
+```
+
+**During work**:
+
+```bash
+# Make small, frequent commits
+git commit -m "wip: add Scene interface"
+git commit -m "wip: add Editor interface"
+git commit -m "fix typo in Scene interface"
+```
+
+**Before requesting merge (cleanup)**:
+
+```bash
+# Clean up your commits
+git rebase -i HEAD~10
+# Squash "wip" commits, fix commit messages
+
+# Final push
+git push --force-with-lease
+```
+
+**Task complete (integrate)**:
+
+```bash
+# Switch to Phase branch
+git checkout feature/phase-1-core-architecture
+git pull
+
+# Merge with --no-ff (DO NOT REBASE HERE)
+git merge feature/phase-1-typescript-types --no-ff -m "feat(phase-1): add TypeScript type definitions
+
+- Add SceneObject and SceneNode interfaces
+- Add EditorState and ViewportState
+- Export all types from index.ts"
+
+git push origin feature/phase-1-core-architecture
+```
+
+---
+
+#### Claude's Role
+
+Claude will **guide** you through this:
+
+- ✅ Suggest rebase when syncing personal branches
+- ✅ Suggest interactive rebase before merging
+- ⚠️ Warn when rebase is dangerous
+- ✅ Auto-use merge --no-ff for integration points
+- 🛡️ Block rebase on protected branches (main, develop)
+
+**Examples**:
+
+```
+You: "Update my branch with latest changes"
+Claude: "You're on feature/phase-1-typescript-types (personal branch).
+         I'll rebase to feature/phase-1-core-architecture for clean history.
+         git rebase feature/phase-1-core-architecture"
+
+You: "My task is complete"
+Claude: "Ready to merge into feature/phase-1-core-architecture.
+         I'll use --no-ff to preserve feature boundary.
+         git merge feature/phase-1-typescript-types --no-ff"
+
+You: "git rebase develop" (while on develop)
+Claude: "⛔ BLOCKED: Cannot rebase develop (shared branch).
+         This would rewrite history for the entire team.
+         If you want to update: git pull origin develop"
+```
+
+---
+
+#### Summary: Hybrid Strategy Benefits
+
+✅ **Clean history**: Personal branches stay linear (rebase)
+✅ **Clear boundaries**: Features and Phases visible (merge --no-ff)
+✅ **Safe collaboration**: Public branches protected from rewrites
+✅ **Best of both worlds**: Like Vue.js daily work + GitHub PR workflow
+✅ **Flexible**: You can rebase when it makes sense, merge when safety matters
+
+**Rule of thumb**:
+
+- Rebase = Clean up your own work
+- Merge = Integrate with team's work
 
 ---
 

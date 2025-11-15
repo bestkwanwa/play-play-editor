@@ -431,7 +431,130 @@ git branch -m feature/phase-{N}-{description}
 
 ---
 
-### ⚠️ WARN: Merging Without `--no-ff`
+### ✅ SUGGEST: Sync Personal Branch with Rebase
+
+**Detect**:
+- User says: "update my branch", "sync with latest", "get latest changes"
+- User is on a personal task branch: `feature/phase-{N}-{task}`
+- Parent Phase branch has new commits
+
+**Suggest**:
+```
+💡 Your branch feature/phase-{N}-{task} is behind feature/phase-{N}-{name}.
+
+I recommend rebasing to keep your commits on top of latest changes:
+  git rebase feature/phase-{N}-{name}
+
+This will:
+- ✅ Keep your branch history linear
+- ✅ Make eventual merge cleaner
+- ✅ Resolve conflicts now (easier than later)
+
+Proceed with rebase? [Yes/No/Merge instead]
+
+📖 See: dev/GIT_WORKFLOW.md#q9-should-i-use-git-rebase-or-git-merge
+```
+
+**If Yes, auto-execute**:
+```bash
+git fetch origin
+git rebase feature/phase-{N}-{name}
+
+# If conflicts occur, guide user through resolution
+# If already pushed, remind about --force-with-lease
+```
+
+**If conflicts during rebase**:
+```
+⚠️ Rebase conflict in: {file}
+
+Steps to resolve:
+1. Open {file}
+2. Look for conflict markers (<<<, ===, >>>)
+3. Edit to keep correct version
+4. git add {file}
+5. git rebase --continue
+
+Or, to abort rebase:
+  git rebase --abort
+
+Need help? I can explain what changed on each side.
+```
+
+**After successful rebase (if branch was pushed)**:
+```
+✅ Rebase complete! Your commits are now on top of latest changes.
+
+⚠️ Your branch history was rewritten.
+If you've already pushed this branch, you need to force push:
+  git push --force-with-lease origin feature/phase-{N}-{task}
+
+--force-with-lease is safer than --force (protects against overwriting others' work)
+
+Push now? [Yes/No]
+```
+
+---
+
+### ✅ SUGGEST: Interactive Rebase Before Merge
+
+**Detect**:
+- User says: "task complete", "ready to merge"
+- User is on a task branch with >5 commits
+- Some commits have "wip", "tmp", "fix typo" messages
+
+**Suggest**:
+```
+💡 Before merging, would you like to clean up your commits?
+
+You have 8 commits:
+  - wip: add Scene interface
+  - wip: add Editor interface
+  - fix typo
+  - wip: add Transform types
+  - fix another typo
+  - add Common types
+  - update exports
+  - fix formatting
+
+I recommend using interactive rebase to:
+- Squash "wip" commits into meaningful ones
+- Fix commit messages
+- Remove "fix typo" commits (squash into parent)
+
+Result: 2-3 clean commits instead of 8 messy ones
+
+Clean up commits before merging? [Yes/No/Skip]
+
+📖 See: dev/GIT_WORKFLOW.md#when-to-use-rebase
+```
+
+**If Yes**:
+```
+I'll start interactive rebase for last 8 commits:
+  git rebase -i HEAD~8
+
+In the editor that opens:
+- Change "pick" to "squash" (or "s") to combine commits
+- Change "pick" to "reword" (or "r") to edit commit message
+- Delete lines to remove commits entirely
+
+Example:
+  pick abc1234 wip: add Scene interface
+  squash def5678 wip: add Editor interface  ← Squash into previous
+  squash ghi9012 fix typo                    ← Squash into previous
+  pick jkl3456 add Transform types
+  squash mno7890 fix another typo            ← Squash into previous
+  reword pqr1234 add Common types            ← Change message
+  squash stu5678 update exports              ← Squash into previous
+  squash vwx9012 fix formatting              ← Squash into previous
+
+Ready? [Yes/Show me example/Cancel]
+```
+
+---
+
+### ⚠️ WARN: Merging Without `--no-ff` (on Public Branches)
 
 **Detect**:
 - User runs: `git merge {branch}` without `--no-ff` flag
@@ -453,6 +576,55 @@ Suggested command:
 Should I run this for you? [Yes/No/Proceed with fast-forward]
 
 📖 See: dev/GIT_WORKFLOW.md#why-no-ff
+```
+
+---
+
+### ❌ BLOCK: Rebasing Public/Shared Branches
+
+**Detect**:
+- User runs: `git rebase {anything}` while on `main`, `develop`, or a Phase branch
+- These are shared branches where multiple developers may have based work
+
+**Block message**:
+```
+⛔ **BLOCKED**: Cannot rebase `{branch-name}` (shared branch).
+
+You're trying to rebase a public branch that others might be using.
+
+Why this is dangerous:
+- ❌ Rewrites history for everyone
+- ❌ Breaks other developers' branches
+- ❌ Can cause lost commits and merge disasters
+
+Current branch: {branch-name}
+Branch type: {main/develop/Phase branch} (PUBLIC - multiple people use this)
+
+What to do instead:
+- If you want latest changes: git pull origin {branch-name}
+- If you want to update from another branch: git merge {other-branch}
+
+Safe to rebase:
+✅ Personal task branches (feature/phase-{N}-{specific-task})
+❌ Main, develop, or Phase branches (feature/phase-{N}-{phase-name})
+
+📖 See: dev/GIT_WORKFLOW.md#safety-rules-for-rebase
+```
+
+**Exception**:
+If user insists and can prove they coordinate with team:
+```
+⚠️ Rebasing shared branches requires team coordination.
+
+Have you:
+[ ] Confirmed no one else has branches based on this?
+[ ] Informed all team members?
+[ ] Have everyone's approval?
+
+If yes to all, you can proceed with:
+  git rebase {target} --force-with-lease
+
+But be VERY careful!
 ```
 
 ---
