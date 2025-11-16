@@ -10,14 +10,8 @@
 
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
-import type {
-  EditorState,
-  GizmoMode,
-  TransformSpace,
-  ViewportMode,
-  CameraType,
-  DEFAULT_EDITOR_STATE,
-} from '@/types'
+import type { EditorState, GizmoMode, TransformSpace, ViewportMode, CameraType } from '@/types'
+import { DEFAULT_EDITOR_STATE } from '@/types'
 
 /**
  * UI store state
