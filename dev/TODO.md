@@ -1,7 +1,8 @@
 # Project TODO
 
-**Last Updated**: 2025-11-13
-**Current Phase**: Phase 1 - Core Architecture
+**Last Updated**: 2025-11-17
+**Current Phase**: Phase 1 - Core Architecture (✅ COMPLETED)
+**Project Type**: Home Decoration 3D Editor (家装行业编辑器)
 
 ---
 
@@ -26,78 +27,116 @@
 
 ---
 
-## 🎯 Current Sprint: Phase 1 - Core Architecture (2-3 days)
+## 🎯 Next Up: Phase 2 - 3D Viewport Foundation (2-3 days)
 
-**Reference**: dev/active/editor-core-architecture/editor-core-architecture-tasks.md
+**Pre-Phase Discussion Required**: ✅ YES - Technical approach discussion needed
+**Reference**: dev/active/editor-core-architecture/home-decoration-editor-phases.md#phase-2
 
-### 1.1 Create Directory Structure
+### Discussion Topics Before Starting Phase 2
 
-- [ ] Create all core directories (src/core/, src/components/, etc.)
-- [ ] Add index.ts barrel exports
-- [ ] Create README.md for each major module
+- Camera setup (perspective vs orthographic for floor plan view?)
+- Performance targets (target devices and FPS goals)
+- Viewport layout (single view vs multi-view for 2D/3D)
+- R3F Canvas configuration (renderer settings, shadows, tone mapping)
 
-### 1.2 Define TypeScript Interfaces
+### Tasks (High-Level)
 
-- [ ] Create src/types/scene.ts (SceneObject, SceneNode)
-- [ ] Create src/types/editor.ts (EditorState, ViewportState)
-- [ ] Create src/types/transform.ts (Position, Rotation, Scale)
-- [ ] Create src/types/common.ts (UUID, Serializable)
-- [ ] Export all types from src/types/index.ts
-
-### 1.3 Set Up Zustand Stores
-
-- [ ] Create src/store/sceneStore.ts
-- [ ] Create src/store/selectionStore.ts
-- [ ] Create src/store/uiStore.ts
-- [ ] Create src/store/historyStore.ts
-- [ ] Write unit tests for stores
-
-### 1.4 Create Core Hooks
-
-- [ ] Create src/hooks/useSceneObject.ts
-- [ ] Create src/hooks/useSelection.ts
-- [ ] Create src/hooks/useTransform.ts
-- [ ] Create src/hooks/useHistory.ts
+- [ ] Set up React Three Fiber Canvas
+- [ ] Implement camera controls (OrbitControls)
+- [ ] Add grid helper and coordinate axes
+- [ ] Add simple geometric primitives for testing
+- [ ] Set up performance monitoring (r3f-perf)
+- [ ] Verify 60fps on empty scene
 
 ---
 
-## 📦 Backlog: Future Phases
+## 📦 Backlog: Future Phases (Home Decoration Editor)
 
-### Phase 2: 3D Viewport Foundation (3-4 days)
+**Full Planning**: dev/active/editor-core-architecture/home-decoration-editor-phases.md
 
-- [ ] Create viewport component with R3F Canvas (tasks.md:2.1)
-- [ ] Implement camera controls (tasks.md:2.2)
-- [ ] Add grid and axes helpers (tasks.md:2.3)
-- [ ] Implement basic 3D primitives (tasks.md:2.4)
-- [ ] Add performance monitoring (tasks.md:2.5)
+### Phase 3: Wall Drawing System (5-7 days) 🏗️ CORE FEATURE
 
-### Phase 3: Scene Management (5-7 days)
+**Pre-Phase Discussion Required**: ✅ YES - Critical technical decisions needed
 
-- [ ] Scene object manager (tasks.md:3.1)
-- [ ] Object properties system (tasks.md:3.2)
-- [ ] Selection system (tasks.md:3.3)
-- [ ] Transform gizmo system (tasks.md:3.4)
-- [ ] Scene serialization (tasks.md:3.5)
+- [ ] 2D floor plan drawing tool (CAD-style point-and-click)
+- [ ] Wall creation with thickness and height parameters
+- [ ] Door and window placement on walls
+- [ ] Automatic room detection (closed polygons)
+- [ ] 2D to 3D conversion (floor plan → extruded walls)
+- [ ] CSG operations for door/window openings
 
-### Phase 4: UI Components (4-5 days)
+**Discussion Topics**:
 
-- [ ] Hierarchy panel (tasks.md:4.1)
-- [ ] Properties panel (tasks.md:4.2)
-- [ ] Toolbar (tasks.md:4.3)
-- [ ] Top menu bar (tasks.md:4.4)
-- [ ] Responsive layout (tasks.md:4.5)
+- 2D drawing implementation (Canvas overlay vs pure 3D raycasting)
+- Wall geometry approach (ExtrudeGeometry, CSG library choice)
+- Snapping system design (grid, endpoints, angles)
+- Performance with complex floor plans
 
-### Phase 5: History & Advanced Features (4-5 days)
+### Phase 4: Material System (4-5 days) 🎨
 
-- [ ] Undo/redo system (tasks.md:5.1)
-- [ ] Keyboard shortcuts (tasks.md:5.2)
-- [ ] Export functionality (tasks.md:5.3)
-- [ ] Import functionality (tasks.md:5.4)
-- [ ] Optimization & polish (tasks.md:5.5)
+**Pre-Phase Discussion Required**: ✅ YES
+
+- [ ] Material library management
+- [ ] Wall material application (paint, wallpaper, tiles)
+- [ ] Floor material application with tiling patterns
+- [ ] Ceiling design and materials
+- [ ] Baseboards and crown molding
+
+**Discussion Topics**:
+
+- Material resource sources (textures, procedural generation)
+- UV mapping strategy for complex walls
+- Material library architecture
+
+### Phase 5: Furniture & Soft Decoration (5-7 days) 🛋️
+
+**Pre-Phase Discussion Required**: ✅ YES
+
+- [ ] GLTF/GLB model import system
+- [ ] Furniture library with categories
+- [ ] Furniture placement with transform controls
+- [ ] Smart snapping (align to walls, other furniture)
+- [ ] Furniture property editing (size, material, color)
+
+**Discussion Topics**:
+
+- Model sources (Sketchfab workflow, licensing)
+- Model optimization strategy
+- Material/color switching approach
+- Snapping and collision detection
+
+### Phase 6: Lighting, Decoration & Export (4-5 days) ✨
+
+**Pre-Phase Discussion Required**: ✅ YES
+
+- [ ] Dynamic lighting system
+- [ ] Decorative objects (lamps, curtains, artwork, plants)
+- [ ] Day/night scene toggle
+- [ ] 360° panorama view
+- [ ] Scene export (GLTF, screenshots)
+- [ ] Project save/load
+
+**Discussion Topics**:
+
+- Lighting strategy (real-time vs baked)
+- Panorama implementation
+- Export format and project file structure
 
 ---
 
 ## ✅ Recently Completed
+
+### Phase 1: Core Architecture (2025-11-17) ✅
+
+**Duration**: 2 days (started 2025-11-15, completed 2025-11-17)
+
+- [x] Created project directory structure (src/core/, src/components/, src/store/, src/hooks/, src/types/, src/utils/)
+- [x] Defined TypeScript interfaces (scene.ts, editor.ts, transform.ts, common.ts)
+- [x] Set up Zustand stores (sceneStore, selectionStore, uiStore, historyStore)
+- [x] Created custom React hooks (useSceneObject, useSelection, useTransform, useHistory)
+- [x] Wrote comprehensive unit tests (129 tests passing)
+- [x] Added barrel exports (index.ts) for all modules
+- [x] **Result**: Solid architectural foundation with full type safety, 129/130 tests passing
 
 ### Phase 0: Project Foundation (2025-11-13) ✅
 
@@ -136,14 +175,16 @@
 
 **Next Session Focus:**
 
-- Begin Phase 1: Core Architecture
-- Create project directory structure
-- Define TypeScript type system
-- Set up Zustand state management stores
-- Create custom React hooks
+- **Pre-Phase 2 Discussion**: Technical approach for 3D viewport setup
+- Begin Phase 2: 3D Viewport Foundation
+- Set up React Three Fiber canvas
+- Implement camera controls
+- Add grid and performance monitoring
 
 **Architecture Documentation:**
 
-- Plan: dev/active/editor-core-architecture/editor-core-architecture-plan.md
+- **Home Decoration Editor Phases**: dev/active/editor-core-architecture/home-decoration-editor-phases.md
+- Original Plan: dev/active/editor-core-architecture/editor-core-architecture-plan.md
 - Context: dev/active/editor-core-architecture/editor-core-architecture-context.md
-- Tasks: dev/active/editor-core-architecture/editor-core-architecture-tasks.md
+- Original Tasks: dev/active/editor-core-architecture/editor-core-architecture-tasks.md
+- **Feature Requirements**: features.md

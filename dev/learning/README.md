@@ -7,6 +7,9 @@
 ```
 learning/
 ├── README.md                    # 本文件
+├── git-workflow/               # Git Flow + Phase 命名规范
+│   ├── GIT_WORKFLOW.md        # 完整 Git 工作流程指南
+│   └── GIT_WORKFLOW_QUICK_REF.md  # 快速参考
 ├── [topic-name]/               # 按主题组织
 │   ├── qa-YYYY-MM-DD.md       # Q&A 会话记录
 │   ├── summary.md             # 主题总结
@@ -23,6 +26,7 @@ learning/
 ```
 
 示例：
+
 ```
 /save-qa claude-code-setup
 /save-qa skill-system
@@ -48,7 +52,13 @@ learning/
 
 ## 已保存的主题
 
-<!-- 在这里列出所有已保存的主题 -->
+### git-workflow
+
+- **完整指南**: `git-workflow/GIT_WORKFLOW.md`
+- **快速参考**: `git-workflow/GIT_WORKFLOW_QUICK_REF.md`
+- **说明**: Git Flow + Phase 命名策略，由 git-workflow-assistant skill 自动执行
+
+<!-- 在这里列出其他已保存的主题 -->
 
 ---
 
