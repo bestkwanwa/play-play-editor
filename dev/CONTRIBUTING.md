@@ -7,12 +7,15 @@
 ### 首次设置
 
 1. **确保 Claude Code 已安装并配置**
+
    ```bash
    # 项目已包含 .claude/ 配置，重启 Claude Code 即可加载
    ```
 
 2. **阅读配置文档**
+   - `dev/DEV_DIRECTORY_RULES.md` - **必读**：dev/ 目录结构规范
    - `dev/learning/` - 了解 session 管理策略
+   - `dev/learning/git-workflow/` - Git Flow + Phase 命名规范
    - `.claude/skills/` - 了解可用的技能系统
    - `.claude/commands/` - 了解可用的命令
 
@@ -69,11 +72,17 @@
 
 ```
 dev/
-├── TODO.md              # ✅ 项目待办（Claude 自动更新）
-├── CONTRIBUTING.md      # ✅ 本文档
-├── learning/            # ✅ 通用知识库
-└── docs/                # ✅ Dev Docs 规划文档
+├── TODO.md                   # ✅ 项目待办（Claude 自动更新）
+├── CONTRIBUTING.md           # ✅ 本文档
+├── DEV_DIRECTORY_RULES.md    # ✅ 目录结构规范（定义允许的文件类型）
+├── learning/                 # ✅ 通用知识库
+│   ├── git-workflow/        # ✅ Git 工作流程文档
+│   └── [topic]/             # ✅ Q&A 会话、教程
+└── active/                   # ✅ Dev Docs 规划文档（功能特定）
+    └── [feature]/           # ✅ 由 /dev-docs 创建
 ```
+
+**重要**: 关于 dev/ 目录下可以创建什么文件，请参考 `dev/DEV_DIRECTORY_RULES.md`
 
 ### 不提交的文件（个人使用）
 
@@ -83,6 +92,7 @@ dev/
 ```
 
 已在 `.gitignore` 中排除：
+
 ```gitignore
 dev/NEXT_SESSION.md
 ```
@@ -112,12 +122,14 @@ dev/NEXT_SESSION.md
 **你不需要手动编辑 `dev/TODO.md`**，但应该：
 
 ✅ **应该做的**：
+
 - 告诉 Claude 你完成了什么功能
 - 使用 `/dev-docs` 创建规划
 - 查看 TODO.md 了解项目进度
 - 提交代码时包含 Claude 更新的 TODO.md
 
 ❌ **避免做的**：
+
 - 手动编辑 TODO.md（让 Claude 维护）
 - 提交 `dev/NEXT_SESSION.md`（个人文件）
 - 跳过 `/dev-docs` 直接写代码（复杂功能）
@@ -126,10 +138,10 @@ dev/NEXT_SESSION.md
 
 ## 📚 常用命令速查
 
-| 命令 | 用途 | 示例 |
-|------|------|------|
-| `/dev-docs <topic>` | 创建功能规划 | `/dev-docs user-authentication` |
-| `/dev-docs-update` | 更新现有规划 | `/dev-docs-update` |
+| 命令                           | 用途           | 示例                              |
+| ------------------------------ | -------------- | --------------------------------- |
+| `/dev-docs <topic>`            | 创建功能规划   | `/dev-docs user-authentication`   |
+| `/dev-docs-update`             | 更新现有规划   | `/dev-docs-update`                |
 | `/save-qa <positions> [topic]` | 保存对话为知识 | `/save-qa -3 -1 state-management` |
 
 ---
@@ -168,11 +180,13 @@ git pull origin main
 ### 合并冲突处理
 
 **TODO.md 冲突**：
+
 - 通常是勾选框冲突
 - 保留所有已完成的任务（合并两边的 `[x]`）
 - 询问 Claude 帮你解决冲突
 
 **Dev Docs 冲突**：
+
 - 少见（通常不同人写不同功能的 docs）
 - 如果发生，使用 Claude 合并内容
 
@@ -185,4 +199,15 @@ git pull origin main
 - Skills 会在相关话题时自动激活
 - 所有这些都是为了让开发更高效、更一致
 
-有问题？查看 `dev/learning/` 或询问 Claude！
+## 📖 文档快速导航
+
+| 文档                         | 用途                                  |
+| ---------------------------- | ------------------------------------- |
+| `dev/DEV_DIRECTORY_RULES.md` | dev/ 目录结构规范（什么文件可以创建） |
+| `dev/TODO.md`                | 项目任务追踪（当前进度）              |
+| `dev/CONTRIBUTING.md`        | 本文档（工作流程）                    |
+| `dev/learning/git-workflow/` | Git Flow + Phase 命名规范             |
+| `dev/learning/`              | 通用知识库（Q&A、教程）               |
+| `dev/active/`                | 功能规划文档（由 /dev-docs 创建）     |
+
+有问题？查看上述文档或询问 Claude！
