@@ -5,5 +5,19 @@
  * Components are organized by feature/domain.
  */
 
-// Future component exports will be added here
-export {}
+// Viewport components
+export {
+  Viewport3D,
+  Viewport2D,
+  DualViewportLayout,
+  ViewportHelpers,
+  TestPrimitives,
+} from './viewport'
+
+export type {
+  Viewport3DProps,
+  Viewport2DProps,
+  DualViewportLayoutProps,
+  ViewportMode,
+  ViewportHelpersProps,
+} from './viewport'
