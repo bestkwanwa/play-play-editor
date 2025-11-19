@@ -554,29 +554,33 @@ Ready? [Yes/Show me example/Cancel]
 
 ---
 
-### ⚠️ WARN: Merging Without `--no-ff` (on Public Branches)
+### ❌ BLOCK: Merging to develop/main Without `--no-ff`
 
 **Detect**:
-- User runs: `git merge {branch}` without `--no-ff` flag
+- Merging to `develop` or `main` without `--no-ff` flag
+- User OR Claude runs: `git merge {branch}` without `--no-ff`
 
-**Warn message**:
+**Block message**:
 ```
-⚠️ **WARNING**: Merge without `--no-ff` will fast-forward.
+⛔ **BLOCKED**: Merge to {develop/main} MUST use `--no-ff`
 
-Recommended: Use `--no-ff` to preserve branch history.
+All merges to develop and main branches require the `--no-ff` flag.
 
 Why?
 - Preserves complete history of when branches were merged
 - Makes it easy to see Phase boundaries in git log
 - Easier to revert entire features if needed
+- Creates clear merge commits that document when features were integrated
 
-Suggested command:
-  git merge {branch} --no-ff -m "chore(phase-{N}): merge {description}"
+Required command:
+  git merge {branch} --no-ff -m "feat: complete Phase {N} - {description}"
 
-Should I run this for you? [Yes/No/Proceed with fast-forward]
+⚠️ Fast-forward merges are NOT allowed on develop/main branches.
 
 📖 See: dev/GIT_WORKFLOW.md#why-no-ff
 ```
+
+**Note**: This applies to BOTH user commands AND Claude's own execution. Claude must proactively use `--no-ff` when merging to develop/main.
 
 ---
 
@@ -679,6 +683,57 @@ Deleting {main/develop} would break the entire workflow!
 
 📖 See: dev/GIT_WORKFLOW.md#branch-types
 ```
+
+---
+
+## Claude Execution Rules (CRITICAL)
+
+**This section applies when Claude executes git operations, not just when detecting user commands.**
+
+### Core Principle
+
+> **DO NOT wait for warnings or blocks - proactively follow ALL rules when you (Claude) execute git operations.**
+
+### Pre-Merge Checklist for develop/main
+
+**REQUIRED before ANY merge to develop or main:**
+
+Before running `git merge`, Claude MUST verify:
+- [ ] **Using `--no-ff` flag** - NEVER fast-forward merge to develop/main
+- [ ] **Commit message format correct** - "feat: complete Phase {N} - {name}" or similar
+- [ ] **All changes staged and committed** - No uncommitted work
+- [ ] **Documentation updated** - TODO.md reflects current state
+
+### Merge to develop/main Confirmation
+
+**Before executing a merge to develop or main, Claude MUST:**
+
+1. Display the exact command to be run:
+```
+About to merge to {develop/main}:
+  git merge {branch} --no-ff -m "{message}"
+
+This will create a merge commit preserving branch history.
+```
+
+2. Wait for user confirmation if in interactive mode, or proceed if explicitly instructed.
+
+### Self-Check Before Git Operations
+
+When executing git operations, Claude should mentally verify:
+
+1. **Am I on the correct branch?** - Check with `git branch --show-current`
+2. **Am I using the correct flags?** - Especially `--no-ff` for develop/main merges
+3. **Does the commit message follow conventions?**
+4. **Have I read this skill's rules for this operation?**
+
+### Treat All Rules as BLOCK Level
+
+When Claude executes git commands:
+- WARN-level rules → Treat as BLOCK (stop and verify)
+- SUGGEST-level rules → Treat as WARN (consider carefully)
+
+This is stricter than user-facing rules because Claude should model best practices.
 
 ---
 
