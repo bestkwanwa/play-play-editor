@@ -134,6 +134,49 @@
                     "git branch -[dD] (main|master|develop)"
                 ]
             }
+        },
+        "css-debugger": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Enforces systematic CSS debugging workflow for all styling issues (layout, visual, typography, spacing, animations, responsive, stacking, overflow)",
+            "promptTriggers": {
+                "keywords": [
+                    "css",
+                    "styling",
+                    "style",
+                    "layout",
+                    "height",
+                    "width",
+                    "padding",
+                    "margin",
+                    "color",
+                    "font",
+                    "animation",
+                    "transition",
+                    "responsive",
+                    "z-index",
+                    "overflow",
+                    "样式",
+                    "布局",
+                    "高度",
+                    "宽度",
+                    "边距",
+                    "颜色",
+                    "字体",
+                    "动画",
+                    "响应式"
+                ],
+                "intentPatterns": [
+                    "(css|style|styling).*?(not working|issue|problem|broken|wrong)",
+                    "(height|width|layout|padding|margin).*?(not working|issue|problem|incorrect)",
+                    "(color|font|animation|transition).*?(not working|issue|problem)",
+                    "fix.*?(css|style|styling|layout|height|width)",
+                    "样式.*?(问题|错误|不对)",
+                    "布局.*?(问题|错误|不对)",
+                    "(高度|宽度).*?(不对|错误|没有)"
+                ]
+            }
         }
     },
     "notes": {

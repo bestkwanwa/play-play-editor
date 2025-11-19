@@ -4,13 +4,11 @@
 
 import { Canvas } from '@react-three/fiber'
 import { OrthographicCamera, OrbitControls } from '@react-three/drei'
-import { Perf } from 'r3f-perf'
+import { PerfHeadless } from 'r3f-perf'
 import { ViewportHelpers } from './ViewportHelpers'
 import * as THREE from 'three'
 
 export interface Viewport2DProps {
-  /** Whether to show performance monitor */
-  showPerf?: boolean
   /** Whether to show grid and axes helpers */
   showHelpers?: boolean
   /** Camera position (top-down view) */
@@ -26,7 +24,6 @@ export interface Viewport2DProps {
 }
 
 export function Viewport2D({
-  showPerf = false,
   showHelpers = true,
   cameraPosition = [0, 20, 0],
   cameraTarget = [0, 0, 0],
@@ -43,8 +40,8 @@ export function Viewport2D({
       linear
       style={{ width: '100%', height: '100%' }}
     >
-      {/* Performance Monitor (usually hidden in secondary viewport) */}
-      {showPerf && <Perf position="top-left" />}
+      {/* Performance Monitor - Headless mode, UI rendered in EditorLayout */}
+      <PerfHeadless />
 
       {/* Orthographic Camera - Top-down view */}
       <OrthographicCamera makeDefault position={cameraPosition} zoom={zoom} near={0.1} far={1000} />

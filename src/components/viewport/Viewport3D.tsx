@@ -4,13 +4,11 @@
 
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
-import { Perf } from 'r3f-perf'
+import { PerfHeadless } from 'r3f-perf'
 import { ViewportHelpers } from './ViewportHelpers'
 import * as THREE from 'three'
 
 export interface Viewport3DProps {
-  /** Whether to show performance monitor */
-  showPerf?: boolean
   /** Whether to show grid and axes helpers */
   showHelpers?: boolean
   /** Camera position */
@@ -24,7 +22,6 @@ export interface Viewport3DProps {
 }
 
 export function Viewport3D({
-  showPerf = true,
   showHelpers = true,
   cameraPosition = [10, 10, 10],
   cameraTarget = [0, 0, 0],
@@ -42,8 +39,8 @@ export function Viewport3D({
       linear
       style={{ width: '100%', height: '100%' }}
     >
-      {/* Performance Monitor */}
-      {showPerf && <Perf position="top-left" minimal={false} style={{ zIndex: 9999 }} />}
+      {/* Performance Monitor - Headless mode, UI rendered in EditorLayout */}
+      <PerfHeadless />
 
       {/* Camera */}
       <PerspectiveCamera makeDefault position={cameraPosition} fov={50} near={0.1} far={1000} />
