@@ -1,7 +1,7 @@
 # Project TODO
 
-**Last Updated**: 2025-11-17
-**Current Phase**: Phase 1 - Core Architecture (✅ COMPLETED)
+**Last Updated**: 2025-11-19
+**Current Phase**: Phase 2 - 3D Viewport Foundation (✅ COMPLETED)
 **Project Type**: Home Decoration 3D Editor (家装行业编辑器)
 
 ---
@@ -27,36 +27,19 @@
 
 ---
 
-## 🎯 Next Up: Phase 2 - 3D Viewport Foundation (2-3 days)
-
-**Pre-Phase Discussion Required**: ✅ YES - Technical approach discussion needed
-**Reference**: dev/active/editor-core-architecture/home-decoration-editor-phases.md#phase-2
-
-### Discussion Topics Before Starting Phase 2
-
-- Camera setup (perspective vs orthographic for floor plan view?)
-- Performance targets (target devices and FPS goals)
-- Viewport layout (single view vs multi-view for 2D/3D)
-- R3F Canvas configuration (renderer settings, shadows, tone mapping)
-
-### Tasks (High-Level)
-
-- [ ] Set up React Three Fiber Canvas
-- [ ] Implement camera controls (OrbitControls)
-- [ ] Add grid helper and coordinate axes
-- [ ] Add simple geometric primitives for testing
-- [ ] Set up performance monitoring (r3f-perf)
-- [ ] Verify 60fps on empty scene
-
----
-
-## 📦 Backlog: Future Phases (Home Decoration Editor)
-
-**Full Planning**: dev/active/editor-core-architecture/home-decoration-editor-phases.md
-
-### Phase 3: Wall Drawing System (5-7 days) 🏗️ CORE FEATURE
+## 🎯 Next Up: Phase 3 - Wall Drawing System (5-7 days)
 
 **Pre-Phase Discussion Required**: ✅ YES - Critical technical decisions needed
+**Reference**: dev/active/editor-core-architecture/home-decoration-editor-phases.md#phase-3
+
+### Discussion Topics Before Starting Phase 3
+
+- 2D drawing implementation (Canvas overlay vs pure 3D raycasting)
+- Wall geometry approach (ExtrudeGeometry, CSG library choice)
+- Snapping system design (grid, endpoints, angles)
+- Performance with complex floor plans
+
+### Tasks (High-Level)
 
 - [ ] 2D floor plan drawing tool (CAD-style point-and-click)
 - [ ] Wall creation with thickness and height parameters
@@ -65,12 +48,11 @@
 - [ ] 2D to 3D conversion (floor plan → extruded walls)
 - [ ] CSG operations for door/window openings
 
-**Discussion Topics**:
+---
 
-- 2D drawing implementation (Canvas overlay vs pure 3D raycasting)
-- Wall geometry approach (ExtrudeGeometry, CSG library choice)
-- Snapping system design (grid, endpoints, angles)
-- Performance with complex floor plans
+## 📦 Backlog: Future Phases (Home Decoration Editor)
+
+**Full Planning**: dev/active/editor-core-architecture/home-decoration-editor-phases.md
 
 ### Phase 4: Material System (4-5 days) 🎨
 
@@ -126,6 +108,21 @@
 
 ## ✅ Recently Completed
 
+### Phase 2: 3D Viewport Foundation (2025-11-19) ✅
+
+**Duration**: 2 days (started 2025-11-17, completed 2025-11-19)
+
+- [x] Set up React Three Fiber Canvas with PerspectiveCamera
+- [x] Implement OrbitControls with configurable limits
+- [x] Add grid helper and coordinate axes (AxesHelper)
+- [x] Add simple geometric primitives for testing (TestPrimitives)
+- [x] Implement dual viewport system (3D + 2D with PiP toggle)
+- [x] Set up performance monitoring (r3f-perf PerfHeadless + custom PerformanceMonitor)
+- [x] Integrate shadcn/ui components (Button, IconButton, Panel, Separator)
+- [x] Create EditorLayout with Toolbar, Sidebar, and floating panels
+- [x] Add css-debugger skill with systematic debugging workflow
+- [x] **Result**: Complete editor UI framework with 3D/2D viewports, collapsible sidebars, performance monitoring
+
 ### Phase 1: Core Architecture (2025-11-17) ✅
 
 **Duration**: 2 days (started 2025-11-15, completed 2025-11-17)
@@ -175,11 +172,11 @@
 
 **Next Session Focus:**
 
-- **Pre-Phase 2 Discussion**: Technical approach for 3D viewport setup
-- Begin Phase 2: 3D Viewport Foundation
-- Set up React Three Fiber canvas
-- Implement camera controls
-- Add grid and performance monitoring
+- **Pre-Phase 3 Discussion**: Technical approach for wall drawing system
+- Begin Phase 3: Wall Drawing System
+- Decide on 2D drawing implementation approach
+- Design wall geometry and CSG strategy
+- Plan snapping system
 
 **Architecture Documentation:**
 
